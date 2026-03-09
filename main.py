@@ -6,6 +6,12 @@ st.set_page_config(page_title="A/B Testing Analyzer", layout="centered")
 
 st.title("📊 Herramienta de A/B Testing")
 
+tab_calculadora, tab_biblioteca = st.tabs(["🧮 Calculadora de A/B Test", "📚 Biblioteca Teórica"])
+
+# ==========================================
+# PESTAÑA 1: LA CALCULADORA 
+# ==========================================
+
 # Inicializamos el motor
 tester = HypothesisTester(alpha=0.05)
 
@@ -64,3 +70,21 @@ if st.button("Analizar Resultados 🚀", type="primary"):
         st.warning(f"❌ **NO SIGNIFICATIVO** (p-value: {resultado['p_value']:.4f})")
         
     st.write(f"**Estadístico:** {resultado['statistic']:.4f} | **Diferencia (B-A):** {resultado['diff']:.4f}")
+
+
+# ==========================================
+# PESTAÑA 2: LA BIBLIOTECA (Tu Google Doc)
+# ==========================================
+with tab_biblioteca:
+    st.header("📚 Diccionario de Estadística y Experimentación")
+    st.write("Consulta rápida de los conceptos más importantes para el análisis de A/B Testing.")
+    
+    # Recorremos el diccionario que creamos en biblioteca.py para armar la interfaz
+    for categoria, conceptos in teoria_estadistica.items():
+        st.subheader(categoria)
+        
+        for concepto, definicion in conceptos.items():
+            with st.expander(f"📌 {concepto}"):
+                st.write(definicion)
+                
+        st.divider()    
