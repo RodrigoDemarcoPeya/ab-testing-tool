@@ -80,10 +80,9 @@ with tab_biblioteca:
     
     # Recorremos el diccionario que creamos en biblioteca.py para armar la interfaz
     for categoria, conceptos in teoria_estadistica.items():
-        st.subheader(categoria)
-        
-        for concepto, definicion in conceptos.items():
-            with st.expander(f"📌 {concepto}"):
-                st.write(definicion)
-                
+        with st.expander(f"📚 {categoria}", expanded=False):
+            for concepto, definicion in conceptos.items():
+                with st.expander(f"📌 {concepto}"):
+                    st.markdown(definicion)
+                    
         st.divider()

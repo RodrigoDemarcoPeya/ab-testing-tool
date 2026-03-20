@@ -29,3 +29,24 @@ venv\Scripts\activate
 
 # Activar el entorno virtual (Mac/Linux)
 source venv/bin/activate
+
+# Instalar dependencias:
+pip install -r requirements.txt
+
+## ▶️ Cómo ejecutar la app
+
+python -m streamlit run main.py
+
+### Luego abrí el navegador en:
+http://localhost:8501
+
+
+## Estructura del proyecto
+ab-testing-tool/
+│
+├── main.py                # App principal (Streamlit)
+├── src/                   # Lógica del modelo estadístico
+├── data/                  # Datos de ejemplo
+├── utils/                 # Funciones auxiliares
+├── requirements.txt
+└── README.md
