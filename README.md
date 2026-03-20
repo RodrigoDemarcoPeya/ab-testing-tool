@@ -40,7 +40,7 @@ python -m streamlit run main.py
 ### Luego abrí el navegador en:
 http://localhost:8501
 
-
+```
 ## Estructura del proyecto
 ab-testing-tool/
 │
