@@ -246,5 +246,16 @@ Entrega resultados en términos de probabilidades directas
 💡 Intuición:
 “¿Qué tan probable es que B sea mejor que A?”
 """
+    },
+    "5. Modalidades de análisis": {
+        "Proporciones": """x
+""",
+
+        "Medias (T - Test)": """x”
+""",
+
+        "Z Test": """x
+"""
     }
+
 }
