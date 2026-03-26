@@ -1,6 +1,5 @@
 import streamlit as st
 from stats_engine import HypothesisTester
-from explicaciones import obtener_explicacion
 from biblioteca import teoria_estadistica  
 
 st.set_page_config(page_title="A/B Testing Analyzer", layout="centered")
@@ -20,15 +19,19 @@ with tab_calculadora:
         ("Proporciones (Ej: Tasa de Conversión)", "Medias - T-Test (Ej: Ticket Promedio)", "Medias - Z-Test (Gigantes)")
     )
 
-    # --- MÓDULO EDUCATIVO ---
-    info = obtener_explicacion(modalidad)
-    if info:
+    # --- MÓDULO EDUCATIVO (Desde Biblioteca) ---
+    # Buscamos la explicación correspondiente en la sección 5 de la biblioteca
+    info_texto = None
+    if "Proporciones" in modalidad:
+        info_texto = teoria_estadistica["5. Modalidades de análisis"]["Proporciones"]
+    elif "T-Test" in modalidad:
+        info_texto = teoria_estadistica["5. Modalidades de análisis"]["Medias (T - Test)"]
+    elif "Z-Test" in modalidad:
+        info_texto = teoria_estadistica["5. Modalidades de análisis"]["Z Test"]
+
+    if info_texto:
         with st.expander("🧠 Aprender más sobre esta prueba"):
-            st.subheader(info["titulo"])
-            st.write("**¿Cómo funciona?**")
-            st.write(info["como_funciona"])
-            st.write("**¿Cuándo usarla?**")
-            st.write(info["cuando_usar"])
+            st.markdown(info_texto)
 
     st.divider()
 
