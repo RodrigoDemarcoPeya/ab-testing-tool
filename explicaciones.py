@@ -248,13 +248,41 @@ Entrega resultados en términos de probabilidades directas
 """
     },
     "5. Modalidades de análisis": {
-        "Proporciones": """x
+        "Proporciones": """
+            Se utiliza para comparar la tasa de éxito (proporción) entre dos grupos diferentes.
+
+        Utiliza una aproximación de la distribución normal para calcular qué tan lejos está la diferencia observada respecto a lo que esperaríamos si fuera mero azar.
+
+        👉 En resumen:
+        Ideal para variables categóricas o binarias (Sí/No, Éxito/Fracaso).
+
+        💡 Ejemplos clásicos:
+        - Tasa de Conversión (compró o no compró)
+        - Click-Through Rate / CTR (hizo clic o no)
 """,
 
-        "Medias (T - Test)": """x”
+        "Medias (T - Test)": """Se utiliza para comparar el promedio (media) de una variable continua entre dos grupos.
+
+Asume que las poblaciones siguen una distribución normal y que las varianzas son iguales (homocedasticidad).
+
+👉 En resumen:
+Ideal para variables numéricas donde se conoce la desviación estándar de la muestra.
+
+💡 Ejemplos clásicos:
+- Ticket promedio de compra
+- Tiempo en la página
+- Ingresos por usuario
 """,
 
-        "Z Test": """x
+        "Z Test": """Se utiliza para comparar los promedios de dos grupos cuando la muestra es extremadamente grande, o cuando conocemos la desviación estándar poblacional exacta.
+
+Es matemáticamente similar al T-Test, pero asume que la distribución es perfectamente normal al tener una muestra “infinita”.
+
+👉 En resumen:
+De uso restringido. En la vida real empresarial, el T-Test es más seguro y casi siempre preferido.
+
+💡 Casos de uso:
+Solo cuando analizamos muestras verdaderamente gigantescas (ej. cientos de miles de eventos) donde los resultados de Z-Test y T-Test son idénticos.
 """
 }
 
