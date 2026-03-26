@@ -1,88 +1,54 @@
-# 📊 Herramienta de A/B Testing & Aprendizaje Estadístico
+# 📊 Herramienta de A/B Testing
 
-Esta es una herramienta interactiva construida en **Python** y **Streamlit** diseñada con un doble propósito:
-1. **Realizar contrastes de hipótesis reales** para validar si los resultados de los experimentos (A/B Tests) son estadísticamente significativos.
-2. **Servir como plataforma educativa** para aprender e interiorizar conceptos estadísticos aplicados al mundo del producto y la experimentación.
+Esta es una herramienta interactiva construida en Python y Streamlit para realizar contrastes de hipótesis y validar si los resultados de los experimentos (A/B Tests) son estadísticamente significativos.
 
-## 🛠️ Características Principales
+## 🛠️ Características
+* **Pruebas de Proporciones (Z-Test):** Ideal para métricas de conversión (Conversion Rate, Reorder Rate).
+* **Pruebas de Medias (T-Test):** El estándar estadístico para evaluar variables continuas usando la aproximación de Welch (Ticket Promedio, Delta GMV).
+* **Pruebas de Medias (Z-Test):** Para muestras de tamaño gigante con desviación estándar conocida.
+* **Interfaz visual:** Formularios amigables e interpretación automática de resultados (Valores P e Intervalos de Confianza).
 
-La aplicación se divide en dos secciones (pestañas) principales:
+## 🚀 Instalación y Uso
 
-### 🧮 1. Calculadora de A/B Test
-Una interfaz visual para ejecutar pruebas estadísticas clave:
-* **Pruebas de Proporciones (Z-Test):** Ideal para métricas de conversión (Conversion Rate, Reorder Rate, CTR, etc.).
-* **Pruebas de Medias (T-Test):** El estándar estadístico para evaluar variables continuas usando la aproximación de Welch (Ticket Promedio, Tiempo en app, Revenue por usuario).
-* **Pruebas de Medias Gigantes (Z-Test):** Para muestras de tamaño masivo (cientos de miles de eventos) con desviación estándar conocida.
-* **Módulo Educativo Integrado:** Cada modalidad incluye explicaciones dinámicas sobre "cómo funciona matemáticamente" y "cuándo es mejor usarla".
+Sigue estos pasos para ejecutar la herramienta en tu computadora local:
 
-### 📚 2. Biblioteca Teórica
-Un diccionario estadístico completo basado en el conocimiento curado del proyecto para rápida consulta:
-* **Conceptos Básicos:** Estadístico, Parámetro, Varianza, Error Estándar.
-* **Pruebas de Hipótesis:** H₀, Hₐ, Z-Score, P-Value, Significancia (α).
-* **Errores y Potencia:** Error Tipo 1 (Falso Positivo), Error Tipo 2 (Falso Negativo), Potencia (1-β), MDE (Mínimo Efecto Detectable).
-* **Métodos de Experimentación:** Frecuentista (Fixed y Sequential) vs. Bayesiano.
+### 1. Requisitos previos
+Asegúrate de tener [Python](https://www.python.org/downloads/) instalado (versión 3.8 o superior).
 
----
+### 2. Clonar o descargar el proyecto
+Descarga esta carpeta en tu computadora y abre una terminal (línea de comandos) en esta ubicación.
 
-## 🚀 Instalación y Uso Local
-
-Sigue estos pasos para ejecutar la herramienta en tu computadora:
-
-### 1. Requisitos Previos
-Asegúrate de tener [Python](https://www.python.org/downloads/) instalado (se recomienda una versión reciente como 3.9 o superior).
-
-### 2. Clonar el Proyecto
-Clona este repositorio en tu máquina local y abre una terminal en la carpeta principal del proyecto:
+### 3. Crear un entorno virtual (Recomendado)
+Es una buena práctica crear un entorno virtual para no mezclar las dependencias de este proyecto con las de tu sistema:
 ```bash
-git clone https://github.com/RodrigoDemarcoPeya/ab-testing-tool.git
-cd ab-testing-tool
-```
-
-### 3. Crear un Entorno Virtual (Recomendado)
-Es una buena práctica trabajar en un entorno virtual para mantener limpias las dependencias de tu sistema.
-```bash
-# Crear el entorno virtual llamado 'venv'
+# Crear el entorno virtual
 python -m venv venv
 
-# Activar el entorno virtual (En Windows)
+# Activar el entorno virtual (Windows)
 venv\Scripts\activate
 
-# Activar el entorno virtual (En Mac/Linux)
+# Activar el entorno virtual (Mac/Linux)
 source venv/bin/activate
-```
 
-### 4. Instalar Dependencias
-Una vez activo el entorno virtual, instala los paquetes requeridos (`streamlit`, `scipy`, `numpy`):
-```bash
+# Instalar dependencias:
 pip install -r requirements.txt
 ```
-
-### 5. ▶️ Ejecutar la Aplicación
-Arranca el servidor local de Streamlit con el siguiente comando:
-```bash
+## ▶️ Cómo ejecutar la app
+``` bash
 python -m streamlit run main.py
 ```
+### Luego abrí el navegador en:
+http://localhost:8501
 
-La aplicación se abrirá automáticamente en tu navegador por defecto, generalmente en:
-**[http://localhost:8501](http://localhost:8501)**
 
----
-
-## 📂 Estructura del Proyecto
-
-El proyecto está organizado de la siguiente manera:
-
-```bash
+## Estructura del proyecto
+``` bash
 ab-testing-tool/
 │
-├── main.py                # App principal (Frontend Streamlit)
-├── stats_engine.py        # Motor estadístico (Z-Tests, T-Tests de Welch)
-├── biblioteca.py          # Diccionario de conceptos y glosario
-├── explicaciones.py       # Textos y lógicas del módulo educativo
-├── requirements.txt       # Dependencias del proyecto
-└── README.md              # Documentación e instrucciones
+├── main.py                # App principal (Streamlit)
+├── src/                   # Lógica del modelo estadístico
+├── data/                  # Datos de ejemplo
+├── utils/                 # Funciones auxiliares
+├── requirements.txt
+└── README.md
 ```
-
----
-
-*¡Hecho para facilitar la experimentación de producto y la comprensión estadística fundamental!*
