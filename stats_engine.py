@@ -70,6 +70,6 @@ class HypothesisTester:
             "statistic": float(statistic),
             "p_value": float(p_value),
             "diff": float(diff),
-            "is_significant": p_value < self.alpha,
+            "is_significant": bool(p_value < self.alpha),
             "alpha": self.alpha
         }
