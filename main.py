@@ -6,26 +6,31 @@ from scipy.stats import norm, t
 from stats_engine import HypothesisTester
 from biblioteca import teoria_estadistica  
 
-# Configuración de página
+# 1. Configuración de página
 st.set_page_config(page_title="A/B Testing Analyzer", layout="wide", page_icon="📊")
 
-# Estilos personalizados
+# 2. CSS Inteligente (Solución definitiva para visibilidad en Dark/Light Mode)
 st.markdown("""
     <style>
-    .main {
-        background-color: #f8f9fa;
-    }
-    .stMetric {
-        background-color: #ffffff;
+    /* Contenedor de métricas con estilo neutro */
+    div[data-testid="stMetric"] {
+        border: 1px solid rgba(128, 128, 128, 0.3);
         padding: 15px;
         border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        background-color: rgba(128, 128, 128, 0.05);
+    }
+    
+    /* Forzar el color del texto a la variable nativa de Streamlit para que cambie con el tema */
+    [data-testid="stMetricLabel"] > div, 
+    [data-testid="stMetricValue"] > div {
+        color: var(--text-color) !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
 def plot_test_results(resultado, alpha):
     """Genera un gráfico de la distribución con la región de rechazo y el estadístico."""
+    plt.style.use('default') # Resetear estilo para evitar conflictos
     fig, ax = plt.subplots(figsize=(10, 4))
     
     # Determinar qué distribución usar
@@ -44,7 +49,7 @@ def plot_test_results(resultado, alpha):
         critical_value = norm.ppf(1 - alpha/2)
         dist_obj = norm
 
-    ax.plot(x, y, 'b-', lw=2, label=f'Distribución H₀ ({dist_name})')
+    ax.plot(x, y, color='#1f77b4', lw=2, label=f'Distribución H₀ ({dist_name})')
     
     # Regiones de rechazo
     x_left = np.linspace(x.min(), -critical_value, 100)
@@ -59,15 +64,15 @@ def plot_test_results(resultado, alpha):
     z_stat = resultado['statistic']
     ax.axvline(z_stat, color='green', linestyle='--', lw=2, label=f'Estadístico Obs: {z_stat:.2f}')
     
-    # Anotación del p-value
-    ax.annotate(f"p-value: {resultado['p_value']:.4f}", 
-                xy=(z_stat, 0), xytext=(z_stat, max(y)*0.5),
-                arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=5))
-
     ax.set_title(f"Visualización del Test: {resultado['test_name']}")
     ax.set_xlabel("Desviaciones Estándar")
     ax.set_ylabel("Densidad de Probabilidad")
     ax.legend()
+    
+    # Hacer el fondo del gráfico transparente para que se adapte al modo oscuro
+    fig.patch.set_alpha(0.0)
+    ax.set_facecolor((1,1,1,0.1)) 
+    
     st.pyplot(fig)
 
 st.title("📊 Herramienta de A/B Testing")
@@ -169,10 +174,8 @@ with tab_calculadora:
             # Gráfico explicativo
             plot_test_results(resultado, alpha)
                 
-        except ValueError as e:
-            st.error(f"⚠️ Error en los datos: {e}")
         except Exception as e:
-            st.error(f"🚨 Error inesperado: {e}")
+            st.error(f"🚨 Error: {e}")
 
 
 # ==========================================
@@ -180,7 +183,7 @@ with tab_calculadora:
 # ==========================================
 with tab_sd:
     st.header("📐 Calculadora de Desviación Estándar")
-    st.write("Obtén los parámetros necesarios para tu A/B Test a partir de datos crudos o proporciones.")
+    st.write("Obtén los parámetros necesarios para tu A/B Test.")
 
     tipo_metrica = st.radio("Tipo de Métrica", ["Binomial (Proporciones)", "Continua (Medias)"], horizontal=True)
 
@@ -203,33 +206,23 @@ with tab_sd:
             archivo = st.file_uploader("Carga tu archivo", type=["csv", "xlsx"])
             if archivo:
                 try:
-                    if archivo.name.endswith('.csv'):
-                        df_raw = pd.read_csv(archivo)
-                    else:
-                        df_raw = pd.read_excel(archivo)
-                    
+                    df_raw = pd.read_csv(archivo) if archivo.name.endswith('.csv') else pd.read_excel(archivo)
                     columna = st.selectbox("Selecciona la columna con la métrica", df_raw.select_dtypes(include=[np.number]).columns)
-                    
                     data = df_raw[columna].dropna()
-                    mean_val = data.mean()
-                    std_val = data.std()
-                    n_val = len(data)
-
-                    m1, m2, m3 = st.columns(3)
-                    m1.metric("Media ($\mu$)", f"{mean_val:.4f}")
-                    m2.metric("Desv. Estándar ($s$)", f"{std_val:.4f}")
-                    m3.metric("Tamaño Muestra ($n$)", n_val)
                     
-                    st.success("✅ Datos calculados correctamente. Puedes usarlos en la pestaña 'Calculadora de A/B Test'.")
+                    m1, m2, m3 = st.columns(3)
+                    m1.metric("Media ($\mu$)", f"{data.mean():.4f}")
+                    m2.metric("Desv. Estándar ($s$)", f"{data.std():.4f}")
+                    m3.metric("Muestra ($n$)", len(data))
+                    st.success("✅ Datos calculados correctamente.")
                 except Exception as e:
-                    st.error(f"Error al procesar el archivo: {e}")
+                    st.error(f"Error al procesar: {e}")
         
         else:
             c1, c2, c3 = st.columns(3)
-            with c1: m_manual = st.number_input("Media", value=100.0)
-            with c2: s_manual = st.number_input("Desviación Estándar", value=15.0)
-            with c3: n_manual = st.number_input("n (Muestra)", value=1000)
-            st.info("Ingresa los valores obtenidos de herramientas como Looker, Tableau o SQL (STDDEV).")
+            with c1: st.number_input("Media", value=100.0, key="manual_m")
+            with c2: st.number_input("Desviación Estándar", value=15.0, key="manual_s")
+            with c3: st.number_input("Muestra (n)", value=1000, key="manual_n")
 
         with st.expander("📚 ¿Por qué necesitamos estos datos?"):
             st.markdown(teoria_estadistica["6. Proporciones vs. Continuas (Desviación Estándar)"]["¿Por qué en métricas continuas necesitamos los datos crudos?"])
@@ -240,9 +233,6 @@ with tab_sd:
 # ==========================================
 with tab_biblioteca:
     st.header("📚 Diccionario de Estadística y Experimentación")
-    st.write("Consulta rápida de los conceptos más importantes para el análisis de A/B Testing.")
-    
-    # Grid de categorías
     for categoria, conceptos in teoria_estadistica.items():
         with st.expander(f"📁 {categoria}", expanded=False):
             for concepto, definicion in conceptos.items():
