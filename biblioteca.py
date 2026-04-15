@@ -285,6 +285,36 @@ De uso restringido. En la vida real empresarial, el T-Test es más seguro y casi
 💡 Casos de uso:
 Solo cuando analizamos muestras verdaderamente gigantescas (ej. cientos de miles de eventos) donde los resultados de Z-Test y T-Test son idénticos.
 """
+    },
+    "6. Proporciones vs. Continuas (Desviación Estándar)": {
+        "¿Por qué en proporciones solo necesitamos la tasa?": """En una variable binomial (como la tasa de conversión), los datos solo pueden tomar dos valores: 1 (éxito) o 0 (fracaso). 
+
+Debido a esta estructura matemática, la dispersión de los datos (varianza) está directamente ligada a la probabilidad de éxito ($p$). No hay otra forma en que los datos puedan "moverse".
+
+La fórmula de la varianza para una proporción es:
+$$ \sigma^2 = p(1 - p) $$
+
+Y la **Desviación Estándar**:
+$$ \sigma = \sqrt{p(1 - p)} $$
+
+Por eso, si sabés que la tasa es 15% ($p=0.15$), ya sabés exactamente cuál es su desviación estándar. No necesitás ver los datos individuales.
+""",
+
+        "¿Por qué en métricas continuas necesitamos los datos crudos?": """En métricas continuas (como el Tiempo de Resolución o el Ticket Promedio), los datos pueden tomar cualquier valor.
+
+Dos grupos pueden tener el mismo promedio (ej: $100), pero distribuciones muy distintas:
+- **Caso A:** Todos los valores están cerca de $100 (Baja dispersión).
+- **Caso B:** Algunos valores son $10 y otros $190 (Alta dispersión).
+
+La estadística no puede adivinar qué tan "desparramados" están los datos solo con ver el promedio. Por eso necesitamos calcular la **Desviación Estándar Muestral ($s$)** usando cada dato individual ($x_i$):
+
+$$ s = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n - 1}} $$
+
+Donde:
+- $x_i$: Cada dato individual.
+- $\bar{x}$: El promedio de la muestra.
+- $n$: El tamaño de la muestra.
+"""
     }
 
 }

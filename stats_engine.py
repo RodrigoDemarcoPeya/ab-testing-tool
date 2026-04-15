@@ -44,28 +44,28 @@ class HypothesisTester:
     def t_test_means(self, mean_a, mean_b, std_a, std_b, n_a, n_b):
         """Modalidad 3: Contraste T de medias (Welch's T-test)"""
         self._validate_inputs(n_a, n_b, std_a, std_b)
-        
+
         var_a = std_a**2
         var_b = std_b**2
-        
+
         se = np.sqrt((var_a / n_a) + (var_b / n_b))
         if se == 0:
             return self._format_results("T-Test (Medias de Welch)", 0, 1.0, mean_b - mean_a)
-            
+
         t_stat = (mean_b - mean_a) / se
-        
+
         # Grados de libertad (Welch–Satterthwaite)
         df_num = (var_a / n_a + var_b / n_b)**2
         df_den = ((var_a / n_a)**2 / (n_a - 1)) + ((var_b / n_b)**2 / (n_b - 1))
         df = df_num / df_den
-        
-        p_value = 2 * (1 - t.cdf(abs(t_stat), df))
-        
-        return self._format_results("T-Test (Medias de Welch)", t_stat, p_value, mean_b - mean_a)
 
-    def _format_results(self, test_name, statistic, p_value, diff):
+        p_value = 2 * (1 - t.cdf(abs(t_stat), df))
+
+        return self._format_results("T-Test (Medias de Welch)", t_stat, p_value, mean_b - mean_a, df=df)
+
+    def _format_results(self, test_name, statistic, p_value, diff, df=None):
         """Centraliza el formato de salida."""
-        return {
+        res = {
             "test_name": test_name,
             "statistic": float(statistic),
             "p_value": float(p_value),
@@ -73,3 +73,6 @@ class HypothesisTester:
             "is_significant": bool(p_value < self.alpha),
             "alpha": self.alpha
         }
+        if df is not None:
+            res["df"] = float(df)
+        return res
